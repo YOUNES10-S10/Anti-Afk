@@ -1,0 +1,102 @@
+wait(0.5)
+
+local Players = game:GetService("Players")
+local VirtualUser = game:GetService("VirtualUser")
+local player = Players.LocalPlayer
+
+-- GUI
+local gui = Instance.new("ScreenGui")
+gui.Name = "AntiAFK_GUI"
+gui.Parent = game.CoreGui
+gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+-- Main Frame
+local main = Instance.new("Frame")
+main.Parent = gui
+main.BackgroundColor3 = Color3.fromRGB(15,15,15)
+main.Position = UDim2.new(0.65,0,0.2,0)
+main.Size = UDim2.new(0,420,0,180)
+main.Active = true
+main.Draggable = true
+
+-- UICorner
+local corner = Instance.new("UICorner", main)
+corner.CornerRadius = UDim.new(0,12)
+
+-- Header
+local header = Instance.new("Frame")
+header.Parent = main
+header.BackgroundColor3 = Color3.fromRGB(120,0,0)
+header.Size = UDim2.new(1,0,0,40)
+
+local headerCorner = Instance.new("UICorner", header)
+headerCorner.CornerRadius = UDim.new(0,12)
+
+-- Title
+local title = Instance.new("TextLabel")
+title.Parent = header
+title.BackgroundTransparency = 1
+title.Position = UDim2.new(0,10,0,0)
+title.Size = UDim2.new(1,-50,1,0)
+title.Font = Enum.Font.GothamBold
+title.Text = "Ultimate Anti-AFK"
+title.TextSize = 20
+title.TextColor3 = Color3.fromRGB(255,255,255)
+title.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Close Button
+local close = Instance.new("TextButton")
+close.Parent = header
+close.Size = UDim2.new(0,40,1,0)
+close.Position = UDim2.new(1,-40,0,0)
+close.BackgroundColor3 = Color3.fromRGB(180,0,0)
+close.Font = Enum.Font.GothamBold
+close.Text = "X"
+close.TextSize = 20
+close.TextColor3 = Color3.fromRGB(255,255,255)
+
+local closeCorner = Instance.new("UICorner", close)
+closeCorner.CornerRadius = UDim.new(0,8)
+
+close.MouseButton1Click:Connect(function()
+	gui:Destroy()
+end)
+
+-- Status Label
+local status = Instance.new("TextLabel")
+status.Parent = main
+status.BackgroundColor3 = Color3.fromRGB(25,25,25)
+status.Position = UDim2.new(0.05,0,0.35,0)
+status.Size = UDim2.new(0.9,0,0,50)
+status.Font = Enum.Font.Gotham
+status.Text = "Status : Active"
+status.TextSize = 20
+status.TextColor3 = Color3.fromRGB(0,255,100)
+
+local statusCorner = Instance.new("UICorner", status)
+statusCorner.CornerRadius = UDim.new(0,8)
+
+-- Footer
+local footer = Instance.new("TextLabel")
+footer.Parent = main
+footer.BackgroundTransparency = 1
+footer.Position = UDim2.new(0,0,0.75,0)
+footer.Size = UDim2.new(1,0,0,40)
+footer.Font = Enum.Font.GothamBold
+footer.Text = "By Younes"
+footer.TextSize = 18
+footer.TextColor3 = Color3.fromRGB(200,0,0)
+
+-- Anti AFK Logic
+player.Idled:Connect(function()
+	VirtualUser:CaptureController()
+	VirtualUser:ClickButton2(Vector2.new())
+
+	status.Text = "Blocked AFK Kick!"
+	status.TextColor3 = Color3.fromRGB(255,80,80)
+
+	wait(2)
+
+	status.Text = "Status : Active"
+	status.TextColor3 = Color3.fromRGB(0,255,100)
+end)
